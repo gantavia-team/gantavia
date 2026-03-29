@@ -1,24 +1,50 @@
-import api from './api';
+import api from "./api";
 
 export const destinationService = {
-  getAllDestinations: async (filters = {}) => {
-    const params = new URLSearchParams(filters);
-    const response = await api.get(`/destinations?${params}`); // ✅ Fixed backticks
-    return response.data;
+  // ✅ Get all destinations from DB
+  getAllDestinations: async () => {
+    try {
+      const response = await api.get("/destinations");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching destinations:", error);
+      return [];
+    }
   },
 
+  // ✅ Get single destination
   getDestinationById: async (id) => {
-    const response = await api.get(`/destinations/${id}`); // ✅ Fixed backticks
-    return response.data;
+    try {
+      const response = await api.get(`/destinations/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching destination:", error);
+      return null;
+    }
   },
 
+  // ✅ Featured (simple logic)
   getFeaturedDestinations: async () => {
-    const response = await api.get('/destinations/featured');
-    return response.data;
+    try {
+      const response = await api.get("/destinations");
+      return response.data.slice(0, 6);
+    } catch (error) {
+      console.error("Error fetching featured:", error);
+      return [];
+    }
   },
 
+  // ✅ Search (frontend filter)
   searchDestinations: async (query) => {
-    const response = await api.get(`/destinations/search?q=${query}`); // ✅ Fixed backticks
-    return response.data;
+    try {
+      const response = await api.get("/destinations");
+
+      return response.data.filter((dest) =>
+        dest.name.toLowerCase().includes(query.toLowerCase())
+      );
+    } catch (error) {
+      console.error("Search error:", error);
+      return [];
+    }
   },
 };

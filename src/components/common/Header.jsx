@@ -9,7 +9,6 @@ const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -18,14 +17,11 @@ const Header = () => {
   return (
     <header className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-8 py-6 flex items-center justify-between">
-
         {/* 🔥 PREMIUM LOGO */}
         <Link to="/" className="flex items-center space-x-4 group">
-
           {/* SVG Logo */}
           <div className="relative w-14 h-14 group-hover:rotate-6 transition duration-500">
             <svg viewBox="0 0 100 100" className="w-full h-full">
-              
               {/* Gradient Definition */}
               <defs>
                 <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -46,11 +42,7 @@ const Header = () => {
               />
 
               {/* Airplane Arrow */}
-              <polygon
-                points="50,20 60,55 50,50 40,55"
-                fill="url(#grad1)"
-              />
-
+              <polygon points="50,20 60,55 50,50 40,55" fill="url(#grad1)" />
             </svg>
           </div>
 
@@ -60,11 +52,13 @@ const Header = () => {
               Experience
             </span>
 
-            <span className="text-4xl font-extrabold tracking-wide 
-                             bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 
+            <span
+              className="text-4xl font-extrabold tracking-wide 
+                             bg-linear-to-r from-blue-600 via-purple-600 to-pink-500 
                              bg-clip-text text-transparent 
                              group-hover:tracking-widest 
-                             transition-all duration-500">
+                             transition-all duration-500"
+            >
               Gantavia
             </span>
           </div>
@@ -72,16 +66,25 @@ const Header = () => {
 
         {/* Navigation */}
         <div className="hidden lg:flex space-x-10 font-semibold text-base tracking-wide">
-          <Link to="/" className="hover:text-blue-600 transition">HOME</Link>
-          <Link to="/destinations" className="hover:text-blue-600 transition">DESTINATIONS</Link>
-          <Link to="/itinerary" className="hover:text-blue-600 transition">PLAN TRIP</Link>
-          <Link to="/about" className="hover:text-blue-600 transition">ABOUT</Link>
-          <Link to="/contact" className="hover:text-blue-600 transition">CONTACT</Link>
+          <Link to="/" className="hover:text-blue-600 transition">
+            HOME
+          </Link>
+          <Link to="/destinations" className="hover:text-blue-600 transition">
+            DESTINATIONS
+          </Link>
+          <Link to="/itinerary" className="hover:text-blue-600 transition">
+            PLAN TRIP
+          </Link>
+          <Link to="/about" className="hover:text-blue-600 transition">
+            ABOUT
+          </Link>
+          <Link to="/contact" className="hover:text-blue-600 transition">
+            CONTACT
+          </Link>
         </div>
 
         {/* Right Section */}
         <div className="flex items-center space-x-5">
-
           <button
             onClick={() => navigate("/favourites")}
             className="w-11 h-11 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center"
@@ -139,11 +142,21 @@ const Header = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden border-t px-8 py-5 space-y-4 font-medium text-base">
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/destinations" onClick={() => setIsMenuOpen(false)}>Destinations</Link>
-          <Link to="/itinerary" onClick={() => setIsMenuOpen(false)}>Plan Trip</Link>
-          <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
-          <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+          <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            Home
+          </Link>
+          <Link to="/destinations" onClick={() => setIsMenuOpen(false)}>
+            Destinations
+          </Link>
+          <Link to="/itinerary" onClick={() => setIsMenuOpen(false)}>
+            Plan Trip
+          </Link>
+          <Link to="/about" onClick={() => setIsMenuOpen(false)}>
+            About
+          </Link>
+          <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+            Contact
+          </Link>
         </div>
       )}
     </header>

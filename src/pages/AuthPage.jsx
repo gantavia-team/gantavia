@@ -7,7 +7,7 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-blue-400 to-purple-500 px-4">
       <div className="bg-white shadow-2xl rounded-2xl p-12 w-full max-w-lg">
         {/* Title */}
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">

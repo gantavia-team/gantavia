@@ -22,7 +22,7 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
     if (isFavorite) {
       // Remove from favourites
       const updatedFavs = storedFavs.filter(
-        (item) => item.id !== destination.id
+        (item) => item.id !== destination.id,
       );
       localStorage.setItem("favourites", JSON.stringify(updatedFavs));
       setIsFavorite(false);
@@ -43,6 +43,10 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
               src={destination.image}
               alt={destination.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.target.src =
+                  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800";
+              }}
             />
           </div>
 
@@ -109,9 +113,7 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
               >
                 <Heart
                   className={`w-5 h-5 transition-all ${
-                    isFavorite
-                      ? "fill-red-500 text-red-500"
-                      : "text-gray-400"
+                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
                   }`}
                 />
               </button>
@@ -139,9 +141,7 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
           >
             <Heart
               className={`w-5 h-5 transition-all ${
-                isFavorite
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-400"
+                isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
               }`}
             />
           </button>

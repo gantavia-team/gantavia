@@ -29,8 +29,8 @@ const PlanTrip = () => {
       formData.budget === "low"
         ? 1500
         : formData.budget === "medium"
-        ? 3000
-        : 6000;
+          ? 3000
+          : 6000;
 
     return base * days * formData.travelers;
   };
@@ -49,8 +49,8 @@ const PlanTrip = () => {
       formData.budget === "low"
         ? "₹1500 / night"
         : formData.budget === "medium"
-        ? "₹3500 / night"
-        : "₹9000 / night";
+          ? "₹3500 / night"
+          : "₹9000 / night";
 
     return [
       { name: "Grand Stay Hotel", rating: "4.5⭐", price },
@@ -136,8 +136,7 @@ const PlanTrip = () => {
   // ===============================
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
-
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-purple-50 p-8">
       <h1 className="text-4xl font-bold text-center mb-10">
         Smart AI Travel Planner ✈️
       </h1>
@@ -175,9 +174,7 @@ const PlanTrip = () => {
         </div>
 
         <select
-          onChange={(e) =>
-            setFormData({ ...formData, budget: e.target.value })
-          }
+          onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
         >
           <option value="low">Budget</option>
           <option value="medium">Mid Range</option>
@@ -195,7 +192,7 @@ const PlanTrip = () => {
           <option value="romantic">Romantic</option>
         </select>
 
-        <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl">
+        <button className="bg-linear-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl">
           Generate Smart Plan
         </button>
       </form>
@@ -209,7 +206,6 @@ const PlanTrip = () => {
       {/* RESULT */}
       {tripPlan && !loading && (
         <div className="max-w-4xl mx-auto mt-12 bg-white p-8 rounded-3xl shadow-xl">
-
           <h2 className="text-2xl font-bold mb-4">
             Trip to {tripPlan.destination}
           </h2>
@@ -250,7 +246,6 @@ const PlanTrip = () => {
           >
             Download / Print Plan
           </button>
-
         </div>
       )}
     </div>

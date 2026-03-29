@@ -86,7 +86,7 @@ const FeaturedDestinations = () => {
                     className="w-full h-56 object-cover"
                   />
                   <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-semibold text-blue-600 shadow-lg">
-                    ${destination.price}
+                    ₹{destination.price}
                   </div>
                 </div>
 
