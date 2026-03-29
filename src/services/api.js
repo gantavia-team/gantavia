@@ -1,37 +1,93 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+/* =========================
+   BASE BACKEND API
+========================= */
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// Request interceptor to add auth token
+/* =========================
+   AUTH INTERCEPTORS
+========================= */
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
+
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // ✅ Fixed backticks
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = "/auth";
     }
+
     return Promise.reject(error);
   }
 );
 
+/* =========================
+   DESTINATION APIs
+========================= */
+
+// Get all destinations
+export const getDestinations = async () => {
+  try {
+    const res = await api.get("/destinations");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching destinations:", error);
+    return [];
+  }
+};
+
+// Get single destination
+export const getDestinationById = async (id) => {
+  try {
+    const res = await api.get(`/destinations/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching destination:", error);
+    return null;
+  }
+};
+
+// Add destination (admin)
+export const addDestination = async (data) => {
+  const res = await api.post("/destinations", data);
+  return res.data;
+};
+
+// Update destination
+export const updateDestination = async (id, data) => {
+  const res = await api.put(`/destinations/${id}`, data);
+  return res.data;
+};
+
+// Delete destination
+export const deleteDestination = async (id) => {
+  const res = await api.delete(`/destinations/${id}`);
+  return res.data;
+};
+
+/* =========================
+   EXPORT
+========================= */
 export default api;

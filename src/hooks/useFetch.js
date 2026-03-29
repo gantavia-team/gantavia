@@ -29,7 +29,7 @@ export const useFetch = (url, options = {}) => {
     } finally {
       setLoading(false);
     }
-  }, [url, options]); // Include options in deps
+  }, [url, JSON.stringify(options)]); // Include options in deps
 
   useEffect(() => {
     const abortController = new AbortController();

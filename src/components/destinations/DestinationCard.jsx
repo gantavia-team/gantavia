@@ -1,31 +1,55 @@
 import { Link } from "react-router-dom";
 import { MapPin, Star, Heart, Calendar, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../common/Card";
 
 const DestinationCard = ({ destination, viewMode = "grid" }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
+  // Load favourite state on mount
+  useEffect(() => {
+    const storedFavs = JSON.parse(localStorage.getItem("favourites")) || [];
+    const exists = storedFavs.some((item) => item.id === destination.id);
+    setIsFavorite(exists);
+  }, [destination.id]);
+
   const toggleFavorite = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
+
+    const storedFavs = JSON.parse(localStorage.getItem("favourites")) || [];
+
+    if (isFavorite) {
+      // Remove from favourites
+      const updatedFavs = storedFavs.filter(
+        (item) => item.id !== destination.id,
+      );
+      localStorage.setItem("favourites", JSON.stringify(updatedFavs));
+      setIsFavorite(false);
+    } else {
+      // Add to favourites
+      const updatedFavs = [...storedFavs, destination];
+      localStorage.setItem("favourites", JSON.stringify(updatedFavs));
+      setIsFavorite(true);
+    }
   };
 
   if (viewMode === "list") {
     return (
       <Link to={`/destinations/${destination.id}`} className="group">
         <Card className="flex flex-col md:flex-row gap-6 h-full hover:shadow-xl transition-all duration-300">
-          {/* Image */}
           <div className="w-full md:w-64 h-48 md:h-64 shrink-0 rounded-lg overflow-hidden">
             <img
               src={destination.image}
               alt={destination.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.target.src =
+                  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800";
+              }}
             />
           </div>
 
-          {/* Content */}
           <div className="flex-1 flex flex-col justify-between py-2">
             <div>
               <div className="flex items-start justify-between mb-3">
@@ -73,7 +97,6 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
               </div>
             </div>
 
-            {/* Price & Actions */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               <div>
                 <span className="text-sm text-gray-500 block">
@@ -89,7 +112,9 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
                 className="p-3 bg-gray-100 hover:bg-red-100 rounded-xl transition-colors"
               >
                 <Heart
-                  className={`w-5 h-5 transition-all ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"}`}
+                  className={`w-5 h-5 transition-all ${
+                    isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
+                  }`}
                 />
               </button>
             </div>
@@ -99,29 +124,28 @@ const DestinationCard = ({ destination, viewMode = "grid" }) => {
     );
   }
 
-  // Grid View (default)
+  // GRID VIEW
   return (
     <Link to={`/destinations/${destination.id}`}>
       <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
         <div className="relative">
-          {/* Image */}
           <img
             src={destination.image}
             alt={destination.name}
             className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
           />
 
-          {/* Favorite Button */}
           <button
             onClick={toggleFavorite}
             className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:scale-110 transition-all"
           >
             <Heart
-              className={`w-5 h-5 transition-all ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"}`}
+              className={`w-5 h-5 transition-all ${
+                isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
+              }`}
             />
           </button>
 
-          {/* Price Tag */}
           <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
             <span className="text-xs text-gray-500 block">From</span>
             <span className="text-xl font-bold text-blue-600">
