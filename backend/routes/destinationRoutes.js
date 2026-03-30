@@ -1,5 +1,4 @@
 import express from "express";
-const router = express.Router();
 
 import {
   getDestinations,
@@ -13,15 +12,17 @@ import {
 
 import { protect } from "../middleware/authMiddleware.js";
 
-// ✅ Public routes
+const router = express.Router();
+
+/* ========= Public Routes ========= */
 router.get("/", getDestinations);
-router.get("/featured", getFeaturedDestinations); // 🔥 NEW
+router.get("/featured", getFeaturedDestinations);
 router.get("/:id", getDestinationById);
 
-// ✅ Protected routes
+/* ========= Protected Routes ========= */
 router.post("/", protect, addDestination);
 router.put("/:id", protect, updateDestination);
-router.patch("/:id/featured", protect, toggleFeatured); // 🔥 NEW
+router.patch("/:id/featured", protect, toggleFeatured);
 router.delete("/:id", protect, deleteDestination);
 
 export default router;

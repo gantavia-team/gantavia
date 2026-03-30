@@ -13,25 +13,39 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(express.json());
+/* =========================
+   Middleware
+========================= */
 app.use(cors());
+app.use(express.json());
 
-// Serve images (VERY IMPORTANT)
+// Logging middleware (from teammate)
+app.use((req, res, next) => {
+  console.log("👉 Incoming:", req.method, req.url);
+  next();
+});
+
+// Serve images
 app.use("/images", express.static("public/images"));
 
-// Routes
+/* =========================
+   Routes
+========================= */
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);
 
-// Health check route
+/* =========================
+   Health Check
+========================= */
 app.get("/", (req, res) => {
-  res.send(" Tourist Companion API is running...");
+  res.send("Tourist Companion API is running...");
 });
 
-// Server start
+/* =========================
+   Start Server
+========================= */
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(` Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

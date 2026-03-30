@@ -1,6 +1,6 @@
 import Destination from "../models/Destination.js";
 
-// ✅ Get all destinations
+// Get all destinations
 export const getDestinations = async (req, res) => {
   try {
     const destinations = await Destination.find().sort({ createdAt: -1 });
@@ -10,7 +10,7 @@ export const getDestinations = async (req, res) => {
   }
 };
 
-// ✅ Get featured destinations
+// Get featured destinations
 export const getFeaturedDestinations = async (req, res) => {
   try {
     const featured = await Destination.find({ featured: true })
@@ -23,7 +23,7 @@ export const getFeaturedDestinations = async (req, res) => {
   }
 };
 
-// ✅ Get single destination
+// Get single destination
 export const getDestinationById = async (req, res) => {
   try {
     const destination = await Destination.findById(req.params.id);
@@ -38,12 +38,12 @@ export const getDestinationById = async (req, res) => {
   }
 };
 
-// ✅ Add destination
+// Add destination
 export const addDestination = async (req, res) => {
   try {
     const newDestination = await Destination.create({
       ...req.body,
-      featured: req.body.featured || false, // ✅ ensure default
+      featured: req.body.featured || false,
     });
 
     res.status(201).json(newDestination);
@@ -52,7 +52,7 @@ export const addDestination = async (req, res) => {
   }
 };
 
-// ✅ Update destination
+// Update destination
 export const updateDestination = async (req, res) => {
   try {
     const updated = await Destination.findByIdAndUpdate(
@@ -71,7 +71,7 @@ export const updateDestination = async (req, res) => {
   }
 };
 
-// ✅ Toggle featured (NEW 🔥)
+// Toggle featured
 export const toggleFeatured = async (req, res) => {
   try {
     const { featured } = req.body;
@@ -92,7 +92,7 @@ export const toggleFeatured = async (req, res) => {
   }
 };
 
-// ✅ Delete destination
+// Delete destination
 export const deleteDestination = async (req, res) => {
   try {
     const deleted = await Destination.findByIdAndDelete(req.params.id);

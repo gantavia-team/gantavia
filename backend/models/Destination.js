@@ -44,13 +44,14 @@ const destinationSchema = new mongoose.Schema(
     },
 
     category: {
-      type: [String], //  FIXED (array)
+      type: [String],
       default: ["City"],
     },
+
     featured: {
-    type: Boolean,
-    default: false,
-  }
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
