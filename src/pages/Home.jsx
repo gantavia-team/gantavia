@@ -4,6 +4,7 @@ import { Compass, Shield, Headphones, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+
   const features = [
     {
       icon: Compass,
@@ -34,6 +35,7 @@ const Home = () => {
   return (
     <div>
       <Hero />
+
       <FeaturedDestinations />
 
       {/* Features Section */}
@@ -71,7 +73,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-linear-to-r from-blue-600 via-purple-600 to-indigo-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Ready to Start Your Adventure?

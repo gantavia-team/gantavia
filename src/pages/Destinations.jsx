@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import DestinationCard from "../components/destinations/DestinationCard";
 import FilterPanel from "../components/destinations/FilterPanel";
 import { Search, MapPin } from "lucide-react";
@@ -8,6 +8,8 @@ import { getDestinations } from "../services/api";
 
 const Destinations = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const [destinations, setDestinations] = useState([]);
   const [filteredDestinations, setFilteredDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,12 @@ const Destinations = () => {
 
   const hasFetched = useRef(false);
 
-  /* FETCH */
+  // ✅ Book Now Navigation (from dev)
+  const handleBookNow = (destination) => {
+    navigate("/plantrip", { state: destination });
+  };
+
+  // ✅ Fetch once
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
@@ -177,7 +184,6 @@ const Destinations = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
       {/* HERO */}
       <div className="bg-linear-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4">
@@ -212,7 +218,6 @@ const Destinations = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* Filters */}
           <aside className="hidden lg:block w-80">
             <FilterPanel onFilterChange={handleFilterChange} isMobile={false} />
           </aside>
@@ -221,10 +226,9 @@ const Destinations = () => {
             <FilterPanel onFilterChange={handleFilterChange} isMobile={true} />
           </div>
 
-          {/* Content */}
           <div className="flex-1">
 
-            {/* Sort */}
+            {/* Toolbar */}
             <div className="bg-white rounded-lg shadow-md p-4 mb-6 flex justify-end">
               <select
                 value={sortBy}
@@ -238,7 +242,6 @@ const Destinations = () => {
               </select>
             </div>
 
-            {/* Grid */}
             {filteredDestinations.length === 0 ? (
               <div className="text-center p-10">
                 <MapPin className="mx-auto mb-4 text-gray-400" size={40} />
@@ -252,11 +255,11 @@ const Destinations = () => {
                       key={destination.id}
                       destination={destination}
                       viewMode={viewMode}
+                      onBookNow={handleBookNow}
                     />
                   ))}
                 </div>
 
-                {/* Pagination */}
                 {totalPages > 1 && (
                   <div className="mt-10 flex justify-center gap-2">
                     {[...Array(totalPages)].map((_, i) => (
@@ -276,7 +279,6 @@ const Destinations = () => {
                 )}
               </>
             )}
-
           </div>
         </div>
       </div>

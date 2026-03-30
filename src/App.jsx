@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-// import { BookingProvider } from "./context/BookingContext";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import axios from "axios";
 
 import MainLayout from "./layouts/MainLayouts";
+import AIChatbot from "./components/AIChatbot";
 
 // Pages
 import Home from "./pages/Home";
@@ -14,43 +15,115 @@ import Favourites from "./pages/Favourites";
 import AuthPage from "./pages/AuthPage";
 import PlanTrip from "./pages/PlanTrip";
 
-// Axios Setup (VERY IMPORTANT)
-import axios from "axios";
-
-// 👉 Base URL setup (backend connection)
+// 👉 Axios Base URL (IMPORTANT)
 axios.defaults.baseURL = "http://localhost:5000";
+
+// 🔒 Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <Navigate to="/auth" />;
+
+  return children;
+};
 
 function App() {
   return (
     <AuthProvider>
-      {/* <BookingProvider> */}
       <Router>
         <Routes>
-          
-          {/* Layout Wrapper */}
+
           <Route element={<MainLayout />}>
 
-            {/* Home */}
-            <Route path="/" element={<Home />} />
-
-            {/* Destinations */}
-            <Route path="/destinations" element={<Destinations />} />
-
-            {/* Dynamic Route */}
-            <Route path="/destinations/:id" element={<DestinationDetails />} />
-
-            {/* Other Pages */}
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/favourites" element={<Favourites />} />
+            {/* AUTH */}
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/itinerary" element={<PlanTrip />} />
+
+            {/* HOME */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* DESTINATIONS */}
+            <Route
+              path="/destinations"
+              element={
+                <ProtectedRoute>
+                  <Destinations />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/destinations/:id"
+              element={
+                <ProtectedRoute>
+                  <DestinationDetails />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* OTHER PAGES */}
+            <Route
+              path="/about"
+              element={
+                <ProtectedRoute>
+                  <About />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/contact"
+              element={
+                <ProtectedRoute>
+                  <Contact />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/favourites"
+              element={
+                <ProtectedRoute>
+                  <Favourites />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* PLAN TRIP */}
+            <Route
+              path="/plantrip"
+              element={
+                <ProtectedRoute>
+                  <PlanTrip />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* BACKUP ROUTE */}
+            <Route
+              path="/itinerary"
+              element={
+                <ProtectedRoute>
+                  <PlanTrip />
+                </ProtectedRoute>
+              }
+            />
 
           </Route>
 
         </Routes>
+
+        {/* AI CHATBOT */}
+        <AIChatbot />
+
       </Router>
-      {/* </BookingProvider> */}
     </AuthProvider>
   );
 }
