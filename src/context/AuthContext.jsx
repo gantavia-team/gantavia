@@ -1,7 +1,11 @@
+// src/context/AuthContext.jsx
 import { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 
+// Create Auth Context
 export const AuthContext = createContext();
 
+// Custom hook to use AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -10,12 +14,16 @@ export const useAuth = () => {
   return context;
 };
 
+// Backend API base
+const API = "http://localhost:5000/api/auth";
+
+// AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Load user from localStorage on app start
   useEffect(() => {
-    // Check if user is logged in (from localStorage)
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
@@ -28,56 +36,63 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  /* =========================
+     LOGIN
+  ========================= */
   const login = async (email, password) => {
     try {
-      // Replace with real API call:
-      // const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+      const res = await axios.post(`${API}/login`, { email, password });
 
-      // Mock user for now
-      const mockUser = {
-        id: 1,
-        name: "John Doe",
-        email: email,
-        avatar:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-      };
+      // Backend returns: { _id, name, email, token }
+      const { _id, name, email: userEmail, token } = res.data;
+      const loggedInUser = { _id, name, email: userEmail };
 
-      setUser(mockUser);
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      return mockUser;
+      setUser(loggedInUser);
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      localStorage.setItem("token", token);
+
+      return loggedInUser;
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.response?.data?.msg || error.message);
       throw error;
     }
   };
 
+  /* =========================
+     SIGNUP (auto-login after signup)
+  ========================= */
   const signup = async (name, email, password) => {
     try {
-      // Replace with real API call:
-      // const response = await fetch('/api/signup', { method: 'POST', body: JSON.stringify({ name, email, password }) });
+      // Updated to match your backend signup route
+      const res = await axios.post(`${API}/signup`, { name, email, password });
 
-      const mockUser = {
-        id: Date.now(),
-        name,
-        email,
-        avatar:
-          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-      };
+      // Backend returns: { _id, name, email, token }
+      const { _id, name: userName, email: userEmail, token } = res.data;
+      const newUser = { _id, name: userName, email: userEmail };
 
-      setUser(mockUser);
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      return mockUser;
+      setUser(newUser);
+      localStorage.setItem("user", JSON.stringify(newUser));
+      localStorage.setItem("token", token);
+
+      return newUser;
     } catch (error) {
-      console.error("Signup failed:", error);
+      console.error("Signup failed:", error.response?.data?.msg || error.message);
       throw error;
     }
   };
 
+  /* =========================
+     LOGOUT
+  ========================= */
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
+  /* =========================
+     UPDATE PROFILE
+  ========================= */
   const updateProfile = (updatedData) => {
     if (!user) return;
     const updatedUser = { ...user, ...updatedData };
@@ -85,6 +100,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
+  // Context value
   const value = {
     user,
     loading,

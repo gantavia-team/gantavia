@@ -2,14 +2,12 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// Generate Token
+// Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+  return jwt.sign({ id }, "secret", { expiresIn: "7d" }); // बेहतर: process.env.JWT_SECRET
 };
 
-// Register User
+// REGISTER USER
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -31,11 +29,13 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    const token = generateToken(user._id);
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     console.error("Register Error:", error.message);
@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Login User
+// LOGIN USER
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -53,20 +53,18 @@ export const loginUser = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: "Invalid credentials" });
-    }
+    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: "Invalid credentials" });
-    }
+    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+
+    const token = generateToken(user._id);
 
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     console.error("Login Error:", error.message);
