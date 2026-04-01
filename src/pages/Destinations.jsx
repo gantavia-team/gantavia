@@ -57,7 +57,7 @@ const Destinations = () => {
         name: dest.name,
         country: dest.state || "India",
         location: dest.state || "",
-        image: `http://localhost:5000${dest.image}`,
+        image: `http://localhost:5001${dest.image}`,
         rating: dest.rating || 4.5,
         reviews: dest.reviews || 1000,
         price: dest.price || 10000,

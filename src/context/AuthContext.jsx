@@ -15,7 +15,7 @@ export const useAuth = () => {
 };
 
 // Backend API base
-const API = "http://localhost:5000/api/auth";
+const API = "http://localhost:5001/api/auth";
 
 // AuthProvider
 export const AuthProvider = ({ children }) => {

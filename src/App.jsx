@@ -17,7 +17,7 @@ import PlanTrip from "./pages/PlanTrip";
 import Dashboard from "./pages/Dashboard";
 
 // 👉 Axios Base URL (IMPORTANT)
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:5001";
 
 // 🔒 Protected Route Component
 const ProtectedRoute = ({ children }) => {

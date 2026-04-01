@@ -39,7 +39,7 @@ const DestinationDetails = () => {
 
       // ✅ Fetch from YOUR backend
       const response = await fetch(
-        `http://localhost:5000/api/destinations/${id}`
+        `http://localhost:5001/api/destinations/${id}`
       );
       const data = await response.json();
 
@@ -57,9 +57,9 @@ const DestinationDetails = () => {
 
         // Image from public/images
         images: [
-          `http://localhost:5000${data.image}`,
-          `http://localhost:5000${data.image}`,
-          `http://localhost:5000${data.image}`,
+          `http://localhost:5001${data.image}`,
+          `http://localhost:5001${data.image}`,
+          `http://localhost:5001${data.image}`,
         ],
 
         rating: data.rating || 4.5,
