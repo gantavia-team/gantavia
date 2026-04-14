@@ -15,6 +15,8 @@ import Favourites from "./pages/Favourites";
 import AuthPage from "./pages/AuthPage";
 import PlanTrip from "./pages/PlanTrip";
 import Dashboard from "./pages/Dashboard";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 
 // 👉 Axios Base URL (IMPORTANT)
 axios.defaults.baseURL = "http://localhost:5000";
@@ -40,6 +42,9 @@ function App() {
 
             {/* AUTH (Public) */}
             <Route path="/auth" element={<AuthPage />} />
+             <Route path="/blogs" element={<Blogs />} />
+             <Route path="/blogs/:id" element={<BlogDetail />} />
+    
 
             {/* HOME */}
             <Route

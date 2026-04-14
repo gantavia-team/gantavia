@@ -81,6 +81,9 @@ const Header = () => {
           <Link to="/contact" className="hover:text-blue-600 transition">
             CONTACT
           </Link>
+          <Link to="/blogs" className="hover:text-blue-500">
+          Blogs
+         </Link>
         </div>
 
         {/* Right Section */}

@@ -38,6 +38,69 @@ const Home = () => {
 
       <FeaturedDestinations />
 
+      {/* ✅ BLOG SECTION ADDED */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Latest Travel Blogs
+            </h2>
+            <p className="text-lg text-gray-600">
+              Tips, guides & inspiration for your next trip
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Blog Card 1 */}
+            <div className="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
+              <h3 className="text-xl font-semibold mb-2">
+                Top 10 Places in Manali
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Discover must-visit places for your perfect Manali trip.
+              </p>
+              <Link to="/blog" className="text-blue-600 font-medium">
+                Read More →
+              </Link>
+            </div>
+
+            {/* Blog Card 2 */}
+            <div className="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
+              <h3 className="text-xl font-semibold mb-2">
+                Best Time to Visit
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Know the perfect season to explore Manali comfortably.
+              </p>
+              <Link to="/blog" className="text-blue-600 font-medium">
+                Read More →
+              </Link>
+            </div>
+
+            {/* Blog Card 3 */}
+            <div className="bg-white p-6 rounded-xl shadow hover:shadow-xl transition">
+              <h3 className="text-xl font-semibold mb-2">
+                Budget Travel Tips
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Save money and travel smart with these useful tips.
+              </p>
+              <Link to="/blog" className="text-blue-600 font-medium">
+                Read More →
+              </Link>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Link to="/blog">
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                View All Blogs
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
