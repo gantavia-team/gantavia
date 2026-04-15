@@ -2,56 +2,57 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import mongoose from "mongoose";
 
-import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import destinationRoutes from "./routes/destinationRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 
 dotenv.config();
 
-// ✅ Connect Database
-connectDB();
-
 const app = express();
+
+/* =========================
+   DATABASE CONNECTION
+========================= */
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ DB Error:", err));
 
 /* =========================
    MIDDLEWARE
 ========================= */
 
-// Enable CORS (frontend connection)
+// ✅ CORS FIX (IMPORTANT)
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://your-netlify-app.netlify.app"
+    ],
     credentials: true,
   })
 );
 
-// JSON parser
 app.use(express.json());
-
-// Logging (morgan)
 app.use(morgan("dev"));
 
 /* =========================
    STATIC FILES
 ========================= */
-
-// Serve uploaded images
 app.use("/images", express.static("public/images"));
 
 /* =========================
    ROUTES
 ========================= */
-
 app.use("/api/auth", authRoutes);
 app.use("/api/destinations", destinationRoutes);
-app.use("/api/bookings", bookingRoutes); // ✅ keep this (important)
+app.use("/api/bookings", bookingRoutes);
 
 /* =========================
    HEALTH CHECK
 ========================= */
-
 app.get("/", (req, res) => {
   res.send("🚀 Tourist Companion API is running...");
 });
@@ -59,13 +60,10 @@ app.get("/", (req, res) => {
 /* =========================
    ERROR HANDLING
 ========================= */
-
-// 404 Handler
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ message: "Route not found ❌" });
 });
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Server Error:", err.message);
   res.status(500).json({
@@ -76,9 +74,8 @@ app.use((err, req, res, next) => {
 /* =========================
    SERVER START
 ========================= */
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });

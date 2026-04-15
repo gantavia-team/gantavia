@@ -15,7 +15,7 @@ export const useAuth = () => {
 };
 
 // Backend API base
-const API = "http://localhost:5000/api/auth";
+const API = `${import.meta.env.VITE_API_BASE_URL}/auth`;
 
 // AuthProvider
 export const AuthProvider = ({ children }) => {
