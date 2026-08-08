@@ -82,7 +82,7 @@ const Header = () => {
             CONTACT
           </Link>
           <Link to="/blogs" className="hover:text-blue-500">
-          Blogs
+          BLOGS
          </Link>
         </div>
 
